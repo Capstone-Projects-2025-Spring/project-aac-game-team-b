@@ -4,7 +4,7 @@ sidebar_position: 5
 
 # Use-case descriptions
 
-## Use-Case 1: Game Mechanics - Setting up new room
+## Use-Case 1: Game Mechanics - Setting Up New Room
 
 ### User wants to start a new game room
 
@@ -14,7 +14,7 @@ sidebar_position: 5
 4. User selects grade level 
 5. User clicks 'Start' button
 
-## Use-Case 2: Game Mechanics - Player connects to existing game room
+## Use-Case 2: Game Mechanics - Player Connects to Existing Game Room
 
 ### User wants to setup their connected tablet device and their input mode
 
@@ -26,7 +26,7 @@ sidebar_position: 5
 6. User is presented with the Storyquest gameplay on the main computer display
 7. User is presented with the input mode layout they have chosen on their connected tablet device
 
-## Use-Case 3: Game Mechanics - wrong answer
+## Use-Case 3: Game Mechanics - Wrong Answer
 
 ### User guesses an incorrect answer
 
@@ -37,7 +37,7 @@ sidebar_position: 5
 5. User is notified that their answer was incorrect and to try again
 6. User is prompted again with the same story line
 
-## Use-Case 4: Game Mechanics - correct answer
+## Use-Case 4: Game Mechanics - Correct Answer
 
 ### User guesses a correct answer
 
@@ -48,25 +48,24 @@ sidebar_position: 5
 5. User is notified that their answer was correct
 6. User is notified that its next player's name turn, and waits for their turn
 
-## Use Case 5: Speech Recognition (AAC User) - Voice Input Recognition from External Device or Verbal Speech 
+## Use Case 5: Game Mechanics - AAC User Answers Question
 
-### User wants to answer the question using the speech recognition instead of the built-in AAC device 
+### AAC User wants to answer question 
 
-1. User is given a sentence with a fill-in-the-blank 
-2. User is prompted with answer choices on the screen 
-3. User is given 10 seconds to consider the different answer choices
-4. User is given a warning that the microphone will turn on and will only record sound for a certain amount of time 
-5. User locates the button on their AAC device and presses the button near the microphone.
-6. The application recognizes the speech from the AAC device and records and process it to see if the answer given is correct or incorrect
+1. AAC user is given a sentence with a fill-in-the-blank 
+2. AAC user is prompted with answer choices on the screen 
+3. A pause screen is prompted on player twos's screen 
+3. AAC user picks a answer choice 
+4. The pause screen is taken away from player two's screen 
 
-## Use Case 6: Speech Recognition (Non AAC) - Voice Input Recognition from External Device or Verbal Speech 
+## Use Case 6: Game Mechanics - Player Loses Conection During the Game 
 
-### User wants to answer the question using the speech recognition instead of the built-in AAC device 
+### User is notified when they have lost connection during the game 
 
-1. The user is given a sentence with a fill-in-the-blank 
-2. The user is prompted with answer choices on the screen 
-3. The user push's down on the microphone button to record their speech
-4. The application recognizes the verbal speech from the user and records and process to see if the answer given is right or wrong
+1. User is playing the game when they lost connection to the game room
+2. User is prompted with a lost conection alert 
+3. User is prompted to input the room code for the game session
+4. User inputs correct game code and joins back into the game 
 
 ## Use case 7: Game Mechanics -  Player Joins a Game through the Join Screen 
 
