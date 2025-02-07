@@ -4,21 +4,33 @@ sidebar_position: 4
 
 # Features and Requirements
 ## Functional Requirements
-- Users will be provided with an on-screen AAC tablet catered to the story presented in the game.
-- Users will be prompted with a sentence in which they have to work together to complete by taking    turns to fill in the blanks.
-- Users will have unlimited time to fill in the blank during their turn.
-- Users will be able to try again if they choose the wrong answer.
-- Users must follow prompt to either create a room or join a room.
-- Users who create a room will be able to select a difficulty level based on the overall academic     level of the players.
-- Users will be able to distinguish themselves either with a display name or icon.
-- For the on-screen tablet, audio will play out loud when a button is pressed.
+
+### Gameplay Mechanics
+- The application will display a sentence for users to fill in the blanks.
+- The application will allow users to take turns filling in the blanks.
+    - Visual cues will be provided for users to know it is their turn.
+- The application will provide an on-screen AAC tablet for users to choose their answers
+    - The tablet will display categories essential to the current question.
+    - Pressing a button on the tablet reads the word aloud.
+- The application will check for the answer provided and notify the user whether it is correct or wrong
+    - If wrong, user tries again 
+    - If correct, proceed to next level.
+- The application will provide users with a star for each level completion to display story progression.
+
+### User Management
+- The application will allow users to create a room to host, providing them with a room code.
+- Other users can join an existing room using the room code.
+
+### Game Setup
+- Room creator will be allowed to choose a difficulty setting, I.e., easy, medium, hard.
+- The application will allow for up to 4 players to join a room, and a minimum of 2 players.
+
+
 
 ## Non-functional Requirements
 - User interface will be designed to be understandable for young students/AAC users.
-- Users will all see the same screen on their devices but will be prompted personally when it is      their turn.
 - The number of blanks per level corresponds to the difficulty level of the room.
   - Beginner level rooms will have one blank to fill at the end of the sentence.
   - More advanced rooms will have more than one blank to fill throughout the sentence.
-- The blank slots will highlight either a color or number that corresponds to the user whose turn     it is. 
 - Stars displayed at the top of the screen will help users see their progression through the story.
 - A display will pop up to indicate if a user gets the correct or wrong answer.
