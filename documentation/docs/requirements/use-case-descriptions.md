@@ -52,9 +52,10 @@ sequenceDiagram
 
 
     User -> D: looks at screen 
-    D ->+ GR: User1 decided to join a game and enters token
+    D ->+ GR: User decided to join a game and enters token
     GR ->+ Database: fetchs token for validation
     Database -->- GR: Return Token
+    GR -->- D: returns player to game lobby
 ```    
 
 ### User wants to join the game the host has made
