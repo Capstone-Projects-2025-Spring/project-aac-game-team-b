@@ -51,11 +51,11 @@ sequenceDiagram
 
 
 
-    User -> D: looks at screen 
-    D ->+ GR: User decided to join a game and enters token
-    GR ->+ Database: fetchs token for validation
-    Database -->- GR: Return Token
-    GR -->- D: returns player to game lobby
+    User ->> D: looks at screen 
+    D ->>+ GR: User decided to join a game and enters token
+    GR ->>+ Database: fetchs token for validation
+    Database -->>- GR: Return Token
+    GR -->>- D: returns player to game lobby
 ```    
 
 ### User wants to join the game the host has made
@@ -65,22 +65,64 @@ sequenceDiagram
 3. User inputs the correct code and is brought to a lobby with all the other players who are participating in the game session
 
 ## Use Case 6: Game Mechanics - Wrong answer
+```mermaid
+sequenceDiagram 
+    actor User
+    participant D as Device
+    participant GR as Game Screen
+    participant Database
+
+
+
+
+    User ->> D: looks at screen 
+    D ->>+ GR: User is given a cloze phrase question
+    GR ->>+ Database: fetchs cloze phrase question and answer choices
+    Database -->>- GR: Return cloze phrase question and answer choices
+    GR -->>- D: returns cloze phrase question answer
+
+    D ->>+ GR: User chooses cloze phrase questions answer 
+    GR -->>+ D: User is notified that thier answer is wrong
+    loop Until correct answer is given
+        D->>GR :Enters answer
+        GR-->>D: Incorrect, try again
+    end
+```
 
 ### User guesses an incorrect answer
 
 1. User is in a game session using their device
-2. User is prompted with a storyline containing a missing word
+2. User is prompted with a storyline containing a cloze phrase question
 3. User types or says a word that is an incorrect answer
 4. User clicks the "Confirm" button
 5. User is notified that their answer was incorrect and is prompted to try again
 6. User is prompted with the same storyline
 
 ## Use Case 7: Game Mechanics - Correct answer
+```mermaid
+sequenceDiagram 
+    actor User
+    participant D as Device
+    participant GR as Game Screen
+    participant Database
+
+
+
+
+    User ->> D: looks at screen 
+    D ->>+ GR: User is given a cloze phrase question
+    GR ->>+ Database: fetchs cloze phrase question and answer choices
+    Database -->>- GR: Return cloze phrase question and answer choices
+    GR -->>- D: returns cloze phrase question answer
+
+    D ->>+ GR: User chooses cloze phrase questions answer 
+    GR -->>+ D: User is notified that thier answer is corrrect and that is it the next players turn    
+```
 
 ### User guesses a correct answer
 
 1. User is in a game session using their device
-2. User is prompted with a storyline containing a missing word
+2. User is prompted with a storyline containing a cloze phrase question
 3. User types or says a word that is the correct answer
 4. User clicks the "Confirm" button
 5. User is notified that their answer was correct
