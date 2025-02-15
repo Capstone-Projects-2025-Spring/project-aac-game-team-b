@@ -128,11 +128,28 @@ sequenceDiagram
 5. User is notified that their answer was correct
 6. User is notified that its next player's name turn and waits
 
-## Use Case 8: Gameplay Mechanics - Retry Mechanism
+## Use Case 8: Story & Content - Changin Stories 
+```mermaid
+sequenceDiagram 
+    actor User
+    participant D as Device
+    participant GR as Game Screen
+    participant Database
 
-### User wants to retry the question because they got it wrong 
+     User ->> D: looks at screen 
+     D ->>+ GR: User chooses cloze phrase questions answer 
+    GR -->>+ D: User is notified that thier answer is wrong
+    loop Until correct answer is given
+        D->>GR :Enters answer
+        GR-->>D: Incorrect, try again
+    end
 
-1. User has selected the wrong answer to the question
-2. User receives feedback explaining why their answer was incorrect
-3. User clicks a "Retry" button
+
+```    
+
+### User wants to pick different stories  
+
+1. User clicks the story screen 
+2. User chooses the story that they want to play
+3. User is sent into the stort 
 4. User is given the same question again with the same answer choices 
