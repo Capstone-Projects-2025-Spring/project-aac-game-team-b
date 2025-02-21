@@ -1,35 +1,31 @@
 'use client';
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './styles.css'; // Import the styles
 
 const AnimatedTitle: React.FC = () => {
     const divRef = useRef<HTMLDivElement | null>(null);
+    const [isLoaded, setIsLoaded] = useState(false);
+    const [isWaving, setIsWaving] = useState(false);
 
     useEffect(() => {
         setTimeout(() => {
             if (divRef.current) {
-                divRef.current.classList.add('loaded');
+                setIsLoaded(true);
             }
         }, 500);
-    }, []);
 
-    useEffect(() => {
-        const handleClick = () => {
-            if (divRef.current) {
-                divRef.current.classList.toggle('loaded');
-            }
-        };
-
-        document.body.addEventListener('click', handleClick);
-
-        return () => {
-            document.body.removeEventListener('click', handleClick);
-        };
+        // Trigger wave effect after initial animation
+        setTimeout(() => {
+            setIsWaving(true);
+        }, 1500);
     }, []);
 
     return (
-        <div ref={divRef}>
+        <div
+            ref={divRef}
+            className={`${isLoaded ? 'loaded' : ''} ${isWaving ? 'wave' : ''}`}
+        >
             <span><span>S</span></span>
             <span><span>t</span></span>
             <span><span>o</span></span>

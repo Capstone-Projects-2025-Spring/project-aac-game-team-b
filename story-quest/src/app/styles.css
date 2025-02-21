@@ -21,6 +21,7 @@ div {
     line-height: 1;
 }
 
+/* Wave effect text styling */
 div > span {
     display: inline-block;
     overflow: hidden;
@@ -51,10 +52,59 @@ div > span:nth-child(even) span {
     transform: translateY(100%);
 }
 
+/* Wave animation applied when "loaded" class is added */
 div.loaded > span {
     transform: translateY(0);
 }
 
 div.loaded > span span {
     transform: translateY(0);
+}
+
+/* Wave animation after initial animation */
+div.wave > span {
+    animation: wave 2s ease-in-out infinite;
+}
+
+/*Delay for each letter of the title*/
+
+div.wave > span:nth-child(1) {
+    animation-delay: 0s;
+}
+div.wave > span:nth-child(2) {
+    animation-delay: 0.1s;
+}
+div.wave > span:nth-child(3) {
+    animation-delay: 0.2s;
+}
+div.wave > span:nth-child(4) {
+    animation-delay: 0.3s;
+}
+div.wave > span:nth-child(5) {
+    animation-delay: 0.4s;
+}
+div.wave > span:nth-child(6) {
+    animation-delay: 0.5s;
+}
+div.wave > span:nth-child(7) {
+    animation-delay: 0.6s;
+}
+div.wave > span:nth-child(8) {
+    animation-delay: 0.7s;
+}
+div.wave > span:nth-child(9) {
+    animation-delay: 0.8s;
+}
+div.wave > span:nth-child(10) {
+    animation-delay: 0.9s;
+}
+
+/* Keyframes for wave animation */
+@keyframes wave {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-20px);
+    }
 }
