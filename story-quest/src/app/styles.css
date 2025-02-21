@@ -1,9 +1,6 @@
 /* styles.css */
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
-
+/*CSS for Animated Title in start page*/
 body {
     align-items: center;
     background: #3692ff;

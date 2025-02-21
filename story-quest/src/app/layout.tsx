@@ -24,6 +24,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+    <head>
+        {/* Google Fonts import */}
+        <link href="https://fonts.googleapis.com/css2?family=Slackey&display=swap" rel="stylesheet" />
+    </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
