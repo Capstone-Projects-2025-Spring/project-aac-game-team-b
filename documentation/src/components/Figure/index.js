@@ -1,6 +1,6 @@
 import React from 'react';
 // import {Zoom} from 'plugin-image-zoom'
-// import 'react-medium-image-zoom/dist/HomePageTitleSyles.css'
+// import 'react-medium-image-zoom/dist/AnimatedTitleStyles.css'
 
 // function WillZoom(props) {
 //     return props.noZoom ? <>{props.children}</> : <Zoom>{props.children}</Zoom>
