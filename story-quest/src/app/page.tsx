@@ -1,5 +1,6 @@
 import Image from "next/image";
-import AnimatedTitle from './AnimatedTitle'; // Import the component
+import HomePageAnimatedTitle from '@/app/HomePage/HomePageAnimatedTitle';
+import AnimatedButton from "@/app/HomePage/HomePageAnimatedButtons";
 
 
 export default function Home() {
@@ -8,16 +9,18 @@ export default function Home() {
         style={{ backgroundImage: "url('/Background.jpg')",
         backgroundSize: "cover",
     }}>
-
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
+      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start flex-grow">
         <div>
-          <AnimatedTitle/>
+          <HomePageAnimatedTitle/>
         </div>
 
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
+      <div className="button-container">
+         <div>
+          <AnimatedButton/>
+         </div>
+      </div>
 
-        </div>
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
 

@@ -1,9 +1,9 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import './styles.css'; // Import the styles
+import './HomePageTitleSyles.css'; // Import the styles
 
-const AnimatedTitle: React.FC = () => {
+const HomePageAnimatedTitle: React.FC = () => {
     const divRef = useRef<HTMLDivElement | null>(null);
     const [isLoaded, setIsLoaded] = useState(false);
     const [isWaving, setIsWaving] = useState(false);
@@ -40,4 +40,4 @@ const AnimatedTitle: React.FC = () => {
     );
 };
 
-export default AnimatedTitle;
+export default HomePageAnimatedTitle;
