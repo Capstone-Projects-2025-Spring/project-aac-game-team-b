@@ -2,7 +2,7 @@ import Image from "next/image";
 import AnimatedTitle from '@/app/HomePage/AnimatedTitle';
 import {CreateButton, JoinButton, TemporaryTestingGameButton} from "@/app/HomePage/HomePageButtons";
 import Link from 'next/link';
-
+import "@/app/HomePage/HomePageStyles.css";
 
 //TO DO:
 //MAKE THE WORD SELECTED IN THE SENTENCE IN BOLD
@@ -185,9 +185,16 @@ export default function Home() {
               <p className="mb-2" style={{ color: "black" }}>
                 {completedPhrase}
               </p>
-import "@/app/HomePage/HomePageStyles.css";
+            </div>
+          ))}
+        </div>
+        </div>
+    </div>
+  );
+};
 
-export default function Home() {
+
+/*export default function Home() {
     return (
         <div className="page-container"
              style={{
@@ -223,4 +230,4 @@ export default function Home() {
             </footer>
         </div>
     );
-}
+}*/
