@@ -1,18 +1,23 @@
-import Image from "next/image";
-import AnimatedTitle from '@/app/HomePage/AnimatedTitle';
-import {CreateButton, JoinButton, TemporaryTestingGameButton} from "@/app/HomePage/HomePageButtons";
-import Link from 'next/link';
+//CURRENTLY THE GAME HAVE:
+// -SPLIT SCREEN, ONE SIDE IS A MOCKUP AAC TABLET, WITH BUTTONS TO CLICK AND ADD IMAGE AND NEXT SENTENCE
+// - IN THE STORIES.TSX FILE, THERE ARE 2 STORIES WITH 3 SENTENCES EACH.
+// - THERE IS A OPTION ON A DROPDOWN TO CHANGE STORIES (DONT KNOW IF WE WANT TO KEEP IP LIKE THIS)
+// - AFTER CLICKING THE WORD BUTTON (LINE 116) THE IMAGE WILL SHOW UP ON THE SCREEN.
+// - AFTER CLICKING ADD WORD BUTTON (LINE 130) SENTENCE IS COMPLETED AND THE SENTENCE IS PUSHED TO THE LEFT CORNER OF PAGE.
+// - AFTER CLICKING THE NEXT SENTENCE BUTTON (LINE 134) THE NEXT FILL-IN-THE-BLANK SENTENCE WILL SHOW UP.
 
 
 //TO DO:
 //MAKE THE WORD SELECTED IN THE SENTENCE IN BOLD
 //ADDING THE VOICE READING THE SENCENCE
 
+
+
+
 "use client";
 
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import stories, { Story, StorySection } from "./stories";//import the stories interface
-import AACKeyboard from "./AACKeyboard";
 
 export default function Home() {
   const [currentStory, setCurrentStory] = useState<Story | null>(null);
@@ -45,43 +50,14 @@ export default function Home() {
   };
 
   const handleWordSelect = (word: string) => {
-    //setUserInput(word);
-    if (!currentStory) return;
-
-  const currentWords = currentStory.sections[currentSectionIndex].words;
-  
-  if (!currentWords[word]) {
-    alert(`Word "${word}" not found in current section!`);
-    return;
-  }
+    setUserInput(word);
     const selectedWordData = currentStory?.sections[currentSectionIndex]?.words[word];
-    /*setCurrentImage({
+    setCurrentImage({
       src: `/images/${selectedWordData?.image || null}`, //making the path based on the word button cliked (they are inside my-game/public/images )
       alt: word,
       x: selectedWordData?.x || 0,
       y: selectedWordData?.y || 0,
-    });*/
-
-    if (!selectedWordData) return;
-
-    const newImage= {
-      src: `/images/${selectedWordData?.image || null}`,
-      alt: word,
-      x: selectedWordData.x || 0,
-      y: selectedWordData.y || 0,
-    }
-
-    const newPhrase = phrase.replace("___", word);
-
-    setCompletedPhrases([...completedPhrases, newPhrase]); //store completed sentence
-    setCompletedImages([...completedImages, newImage]); //store completed image
-
-    if (currentSectionIndex < currentStory.sections.length - 1) {
-      setCurrentSectionIndex(currentSectionIndex + 1);
-      setPhrase(currentStory.sections[currentSectionIndex + 1].phrase);
-    } else {
-      setPhrase("The End!");
-    }
+    });
   };
 
   const handleAddImage = () => {
@@ -112,28 +88,12 @@ export default function Home() {
 
   if (!isMounted || !currentStory) return null;
 
-  const handleAACSelect = (word: string) => {
-  console.log("AAC Button Clicked:", word);
-  handleWordSelect(word);
-  };
-
   return (
     <div className="flex w-screen h-screen">
       {/* Left Panel: AAC Tablet */}
       <div className="w-1/3 bg-gray-200 p-4 flex flex-col justify-center items-center">
         <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
-          <AACKeyboard 
-          onSelect={handleAACSelect} 
-          symbols={currentStory?.sections[currentSectionIndex] 
-          ? Object.entries(currentStory.sections[currentSectionIndex].words).map(
-          ([word, data]) => ({
-          word: word,
-          image: `/images/${data.image}`,
-          displayText: word
-        }))
-        : []
-      }
-        />
+          AAC Tablet
         </h2>
 
         {/* Story Selection */}
@@ -160,6 +120,22 @@ export default function Home() {
           </select>
         </div>
 
+        {/* Word Buttons */}
+        <div className="flex gap-4">
+          {currentStory?.sections[currentSectionIndex]?.words &&
+            Object.keys(currentStory.sections[currentSectionIndex].words).map((word) => (
+              <button
+                key={word}
+                className="px-4 py-2 bg-blue-500 text-white rounded"
+                onClick={() => handleWordSelect(word)}
+              >
+                {word}
+              </button>
+            ))}
+        </div>
+        <button className="mt-4 px-4 py-2 bg-red-500 text-white rounded" onClick={handleAddImage}> 
+          Add word
+        </button>
         {/* Next Section Button */}
         {currentStory?.sections.length > 1 && currentSectionIndex < currentStory.sections.length - 1 && (
           <button className="mt-4 px-4 py-2 bg-green-500 text-white rounded" onClick={handleAddImage}>
@@ -185,42 +161,36 @@ export default function Home() {
               <p className="mb-2" style={{ color: "black" }}>
                 {completedPhrase}
               </p>
-import "@/app/HomePage/HomePageStyles.css";
-
-export default function Home() {
-    return (
-        <div className="page-container"
-             style={{
-                 backgroundImage: "url('HomePage-Images/Background.jpg')",
-                 backgroundSize: "cover",
-             }}>
-            <div className="title-container">
-                <AnimatedTitle/>
             </div>
-
-            <div className="button-container">
-
-                <div className="button-padding">
-                    <div className="button-box">
-                        <CreateButton/>
-                    </div>
-                </div>
-                <div className="button-padding">
-                    <div className="button-box">
-                        <JoinButton/>
-                    </div>
-                </div>
-                <div className="button-padding">
-                    <div className="button-box">
-                        <Link href="/Gameplay">
-                        <TemporaryTestingGameButton/>
-                        </Link>
-                    </div>
-                </div>
-            </div>
-            <footer>
-                <h1 className="copyright-text">Copyright © 2025 StoryQuest</h1>
-            </footer>
+          ))}
         </div>
-    );
+
+        {/* Completed Images (positioned directly on the background) */}
+        <div className="absolute top-0 left-0 w-full h-full">
+          {completedImages.map((image, index) => (
+            <img
+              key={index}
+              src={image.src}
+              alt={image.alt}
+              className="absolute w-16 h-16"
+              style={{ left: `${image.x}%`, top: `${image.y}%` }}
+            />
+          ))}
+        </div>
+
+        {/* Current Phrase and Images */}
+        <p className="mb-2 absolute" style={{ color: "black" }}>
+          {phrase}
+        </p>
+        {currentImage && (
+          <img
+            src={currentImage.src}
+            alt={currentImage.alt}
+            className="absolute w-16 h-16"
+            style={{ left: `${currentImage.x}%`, top: `${currentImage.y}%` }}
+          />
+        )}
+      </div>
+    </div>
+  );
 }
