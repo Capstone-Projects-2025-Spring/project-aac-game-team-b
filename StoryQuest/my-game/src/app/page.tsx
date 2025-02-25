@@ -125,20 +125,18 @@ export default function Home() {
       {/* Left Panel: AAC Tablet */}
       <div className="w-1/3 bg-gray-200 p-4 flex flex-col justify-center items-center">
         <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
-          
           <AACKeyboard 
           onSelect={handleAACSelect} 
           symbols={currentStory?.sections[currentSectionIndex] 
-    ? Object.entries(currentStory.sections[currentSectionIndex].words).map(
-        ([word, data]) => ({
+          ? Object.entries(currentStory.sections[currentSectionIndex].words).map(
+          ([word, data]) => ({
           word: word,
           image: `/images/${data.image}`,
           displayText: word
-        })
-      )
-    : []
-    }
-          />
+        }))
+        : []
+      }
+        />
         </h2>
 
         {/* Story Selection */}
