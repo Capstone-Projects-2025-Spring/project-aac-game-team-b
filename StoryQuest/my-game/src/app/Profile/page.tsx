@@ -15,6 +15,7 @@ export default function ProfilePage() {
   const [birthYear, setBirthYear] = useState("");
   const [level, setLevel] = useState("");
 
+
   const handleSave = () => {
     // TODO: handle saving profile data (API call or local state)
     alert("Profile saved!");
