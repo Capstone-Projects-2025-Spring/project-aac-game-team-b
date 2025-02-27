@@ -1,30 +1,14 @@
-//CURRENTLY THE GAME HAVE:
-// -SPLIT SCREEN, ONE SIDE IS A MOCKUP AAC TABLET, WITH BUTTONS TO CLICK AND ADD IMAGE AND NEXT SENTENCE
-// - IN THE STORIES.TSX FILE, THERE ARE 2 STORIES WITH 3 SENTENCES EACH.
-// - THERE IS A OPTION ON A DROPDOWN TO CHANGE STORIES (DONT KNOW IF WE WANT TO KEEP IP LIKE THIS)
-// - AFTER CLICKING THE WORD BUTTON (LINE 116) THE IMAGE WILL SHOW UP ON THE SCREEN.
-// - AFTER CLICKING ADD WORD BUTTON (LINE 130) SENTENCE IS COMPLETED AND THE SENTENCE IS PUSHED TO THE LEFT CORNER OF PAGE.
-// - AFTER CLICKING THE NEXT SENTENCE BUTTON (LINE 134) THE NEXT FILL-IN-THE-BLANK SENTENCE WILL SHOW UP.
-
-
-//TO DO:
-//MAKE THE WORD SELECTED IN THE SENTENCE IN BOLD
-//ADDING THE VOICE READING THE SENCENCE
-
-
-
-
 "use client";
 
 import React, { useState, useEffect } from "react";
-import stories, { Story, StorySection } from "./stories";//import the stories interface
+import stories, { Story } from "./stories";
 import AACKeyboard from "../Components/AACKeyboard";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
   const [currentStory, setCurrentStory] = useState<Story | null>(null);
   const [phrase, setPhrase] = useState("");
   const [userInput, setUserInput] = useState("");
-  const [addedImage, setAddedImage] = useState<string | null>(null);
   const [images, setImages] = useState<{ src: string; alt: string; x: number; y: number }[]>([]);
   const [isMounted, setIsMounted] = useState(false);
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
@@ -35,10 +19,10 @@ export default function Home() {
   useEffect(() => {
     setIsMounted(true);
     if (stories.length > 0) {
-      setCurrentStory(stories[0]);
+      setCurrentStory(stories[0]); // Set the first story as default
       setPhrase(stories[0].sections[0].phrase);
     }
-  }, []);
+  }, []); // Added dependency array to avoid infinite loops
 
   const handleStoryChange = (story: Story) => {
     setCurrentStory(story);
@@ -51,100 +35,60 @@ export default function Home() {
   };
 
   const handleWordSelect = (word: string) => {
-     //setUserInput(word);
-     if (!currentStory) return;
+    if (!currentStory) return;
 
-   const currentWords = currentStory.sections[currentSectionIndex].words;
+    const currentWords = currentStory.sections[currentSectionIndex].words;
+    if (!currentWords[word]) {
+      alert(`Word "${word}" not found in the current section!`);
+      return;
+    }
 
-   if (!currentWords[word]) {
-     alert(`Word "${word}" not found in current section!`);
-     return;
-   }
-     const selectedWordData = currentStory?.sections[currentSectionIndex]?.words[word];
-     /*setCurrentImage({
-       src: `/images/${selectedWordData?.image || null}`, //making the path based on the word button cliked (they are inside my-game/public/images )
-       alt: word,
-       x: selectedWordData?.x || 0,
-       y: selectedWordData?.y || 0,
-     });*/
+    const selectedWordData = currentWords[word];
+    if (!selectedWordData) return;
 
-     if (!selectedWordData) return;
+    const newImage = {
+      src: `/images/${selectedWordData.image || ""}`,
+      alt: word,
+      x: selectedWordData.x || 0,
+      y: selectedWordData.y || 0,
+    };
 
-     const newImage= {
-       src: `/images/${selectedWordData?.image || null}`,
-       alt: word,
-       x: selectedWordData.x || 0,
-       y: selectedWordData.y || 0,
-     }
+    const newPhrase = phrase.replace("___", word);
 
-     const newPhrase = phrase.replace("___", word);
+    setCompletedPhrases((prev) => [...prev, newPhrase]);
+    setCompletedImages((prev) => [...prev, newImage]);
 
-     setCompletedPhrases([...completedPhrases, newPhrase]); //store completed sentence
-     setCompletedImages([...completedImages, newImage]); //store completed image
-
-     if (currentSectionIndex < currentStory.sections.length - 1) {
-       setCurrentSectionIndex(currentSectionIndex + 1);
-       setPhrase(currentStory.sections[currentSectionIndex + 1].phrase);
-     } else {
-       setPhrase("The End!");
-     }
-   };
-
-  const handleAddImage = () => {
-    if (userInput.trim() !== "" && currentImage && currentStory) {
-      const newPhrase = phrase.replace("___", userInput);
-
-      setCompletedPhrases([...completedPhrases, newPhrase]);
-      setCompletedImages([...completedImages, currentImage]);
-
-      if (currentSectionIndex < currentStory.sections.length - 1) {
-        setCurrentSectionIndex(currentSectionIndex + 1);
-        setPhrase(currentStory.sections[currentSectionIndex + 1].phrase);
-        setUserInput("");
-        setAddedImage(null);
-        setImages([]);
-        setCurrentImage(null);
-      } else {
-        setPhrase("The End!");
-        setUserInput("");
-        setAddedImage(null);
-        setImages([]);
-        setCurrentImage(null);
-      }
+    if (currentSectionIndex < currentStory.sections.length - 1) {
+      setCurrentSectionIndex((prev) => prev + 1);
+      setPhrase(currentStory.sections[currentSectionIndex + 1].phrase);
     } else {
-      alert("Please select a word from the AAC tablet."); //at the end of the story still asks to select word. need to change that
+      setPhrase("The End!");
     }
   };
 
   if (!isMounted || !currentStory) return null;
 
-  const handleAACSelect = (word: string) => {
-   console.log("AAC Button Clicked:", word);
-   handleWordSelect(word);
-   };
-
   return (
     <div className="flex w-screen h-screen">
       {/* Left Panel: AAC Tablet */}
-       <div className="w-1/3 bg-gray-200 p-4 flex flex-col justify-center items-center">
-         <h2 style={{ color: "black" }} className="text-xl font-bold mb-4">
-           <AACKeyboard 
-           onSelect={handleAACSelect} 
-           symbols={currentStory?.sections[currentSectionIndex] 
-           ? Object.entries(currentStory.sections[currentSectionIndex].words).map(
-           ([word, data]) => ({
-           word: word,
-           image: `/images/${data.image}`,
-           displayText: word
-         }))
-         : []
-       }
-         />
-        </h2>
+      <div className="w-1/3 bg-gray-200 p-4 flex flex-col justify-center items-center">
+        <h2 className="text-xl font-bold mb-4 text-black">AAC Tablet</h2>
+        <AACKeyboard
+          onSelect={handleWordSelect}
+          symbols={
+            currentStory?.sections[currentSectionIndex]
+              ? Object.entries(currentStory.sections[currentSectionIndex].words).map(([word, data]) => ({
+                  word: word,
+                  image: `/images/${data.image}`,
+                  displayText: word,
+                }))
+              : []
+          }
+        />
 
         {/* Story Selection */}
         <div className="mb-4">
-          <label htmlFor="story-select" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+          <label htmlFor="story-select" className="block mb-2 text-sm font-medium text-gray-900">
             Select Story:
           </label>
           <select
@@ -156,7 +100,7 @@ export default function Home() {
                 handleStoryChange(selectedStory);
               }
             }}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
           >
             {stories.map((story) => (
               <option key={story.title} value={story.title}>
@@ -165,29 +109,6 @@ export default function Home() {
             ))}
           </select>
         </div>
-
-        {/* Word Buttons OPTIONAL NOW*/}
-        <div className="flex gap-4">
-          {currentStory?.sections[currentSectionIndex]?.words &&
-            Object.keys(currentStory.sections[currentSectionIndex].words).map((word) => (
-              <button
-                key={word}
-                className="px-4 py-2 bg-blue-500 text-white rounded"
-                onClick={() => handleWordSelect(word)}
-              >
-                {word}
-              </button>
-            ))}
-        </div>
-        <button className="mt-4 px-4 py-2 bg-red-500 text-white rounded" onClick={handleAddImage}> 
-          Add word
-        </button>
-        {/* Next Section Button  OPTIONAL NOW TOO*/}
-        {currentStory?.sections.length > 1 && currentSectionIndex < currentStory.sections.length - 1 && (
-          <button className="mt-4 px-4 py-2 bg-green-500 text-white rounded" onClick={handleAddImage}>
-            Next Sentence
-          </button>
-        )}
       </div>
 
       {/* Right Panel: Game Scene */}
@@ -200,42 +121,52 @@ export default function Home() {
           backgroundRepeat: "no-repeat",
         }}
       >
-        {/* Completed Phrases (positioned with the text) */}
+        {/* Completed Phrases */}
         <div className="absolute top-0 left-0 w-full h-full">
           {completedPhrases.map((completedPhrase, index) => (
-            <div key={index} className="absolute" style={{ top: `${index * 50}px`, left: '20px' }}>
-              <p className="mb-2" style={{ color: "black" }}>
-                {completedPhrase}
-              </p>
+            <div key={index} className="absolute" style={{ top: `${index * 50}px`, left: "20px" }}>
+              <p className="mb-2 text-black">{completedPhrase}</p>
             </div>
           ))}
         </div>
 
-        {/* Completed Images (positioned directly on the background) */}
-        <div className="absolute top-0 left-0 w-full h-full">
+        {/* Completed Images with Animation */}
+        <AnimatePresence>
           {completedImages.map((image, index) => (
-            <img
+            <motion.img
               key={index}
               src={image.src}
               alt={image.alt}
               className="absolute w-16 h-16"
               style={{ left: `${image.x}%`, top: `${image.y}%` }}
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              transition={{ duration: 0.5 }}
             />
+            
           ))}
-        </div>
+        </AnimatePresence>
 
-        {/* Current Phrase and Images */}
-        <p className="mb-2 absolute" style={{ color: "black" }}>
-          {phrase}
-        </p>
-        {currentImage && (
-          <img
-            src={currentImage.src}
-            alt={currentImage.alt}
-            className="absolute w-16 h-16"
-            style={{ left: `${currentImage.x}%`, top: `${currentImage.y}%` }}
-          />
-        )}
+        {/* Current Phrase */}
+        <p className="mb-2 absolute text-black">{phrase}</p>
+
+        {/* Current Image with Animation */}
+        <AnimatePresence>
+          {currentImage && (
+            <motion.img
+              key={currentImage.alt}
+              src={currentImage.src}
+              alt={currentImage.alt}
+              className="absolute w-16 h-16"
+              style={{ left: `${currentImage.x}%`, top: `${currentImage.y}%` }}
+              initial={{ opacity: 0, scale: 0.5 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.5 }}
+              transition={{ duration: 0.5 }}
+            />
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );
