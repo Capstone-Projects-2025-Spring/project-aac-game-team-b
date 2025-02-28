@@ -8,3 +8,72 @@
 .env.test.local
 .env.production.local
 node_modules
+.next/
+/StoryQuest/.next/cache/webpack/client-development/0 2.pack.gz
+/StoryQuest/.next/cache/webpack/server-development/0 2.pack.gz
+/StoryQuest/.next/cache/webpack/client-development/1 2.pack.gz
+/StoryQuest/.next/cache/webpack/server-development/1 2.pack.gz
+/StoryQuest/.next/cache/webpack/client-development/2 2.pack.gz
+/StoryQuest/.next/cache/webpack/server-development/2 2.pack.gz
+/StoryQuest/.next/static/webpack/3eb600ffa3f2a9ae.webpack.hot-update.json
+/StoryQuest/.next/static/webpack/8fdd9895844d0af7.webpack.hot-update.json
+/StoryQuest/.next/static/webpack/21cfb56259e6a53a.webpack.hot-update.json
+/StoryQuest/.next/static/media/93f479601ee12b01-s.p.woff2
+/StoryQuest/.next/static/media/569ce4b8f30dc480-s.p.woff2
+/StoryQuest/.next/static/media/747892c23ea88013-s.woff2
+/StoryQuest/.next/static/webpack/633457081244afec._.hot-update.json
+/StoryQuest/.next/server/vendor-chunks/@swc.js
+/StoryQuest/.next/app-build-manifest 2.json
+/StoryQuest/.next/static/chunks/app-pages-internals.js
+/StoryQuest/.next/server/app-paths-manifest 2.json
+/StoryQuest/.next/static/media/ba015fad6dcf6784-s.woff2
+/StoryQuest/.next/build-manifest 2.json
+/StoryQuest/.next/static/webpack/c92a1eef49a754a0.webpack.hot-update.json
+/StoryQuest/.next/types/cache-life.d 2.ts
+/StoryQuest/.next/cache/webpack/client-development/index.pack.gz 2.old
+/StoryQuest/.next/cache/webpack/server-development/index.pack.gz 2.old
+/StoryQuest/.next/cache/webpack/client-development/index 2.pack.gz
+/StoryQuest/.next/cache/webpack/server-development/index 2.pack.gz
+/StoryQuest/.next/server/interception-route-rewrite-manifest 2.js
+/StoryQuest/.next/static/webpack/app/layout.c92a1eef49a754a0.hot-update.js
+/StoryQuest/.next/static/css/app/layout.css
+/StoryQuest/.next/static/chunks/app/layout.js
+/StoryQuest/.next/types/app/layout.ts
+/StoryQuest/.next/static/chunks/main-app.js
+/StoryQuest/.next/server/middleware-build-manifest 2.js
+/StoryQuest/.next/server/middleware-manifest 2.json
+/StoryQuest/.next/server/middleware-react-loadable-manifest 2.js
+/StoryQuest/.next/server/vendor-chunks/next.js
+/StoryQuest/.next/server/next-font-manifest 2.js
+/StoryQuest/.next/server/next-font-manifest 2.json
+/StoryQuest/.next/types/package 2.json
+/StoryQuest/.next/package 2.json
+/StoryQuest/.next/static/css/app/Profile/page.css
+/StoryQuest/.next/static/css/app/page.css
+/StoryQuest/.next/server/app/_not-found/page.js
+/StoryQuest/.next/server/app/Gameplay/page.js
+/StoryQuest/.next/server/app/Profile/page.js
+/StoryQuest/.next/server/app/page.js
+/StoryQuest/.next/static/chunks/app/_not-found/page.js
+/StoryQuest/.next/static/chunks/app/Gameplay/page.js
+/StoryQuest/.next/static/chunks/app/Profile/page.js
+/StoryQuest/.next/static/chunks/app/page.js
+/StoryQuest/.next/types/app/Gameplay/page.ts
+/StoryQuest/.next/types/app/Profile/page.ts
+/StoryQuest/.next/types/app/page.ts
+/StoryQuest/.next/server/app/_not-found/page_client-reference-manifest.js
+/StoryQuest/.next/server/app/Gameplay/page_client-reference-manifest.js
+/StoryQuest/.next/server/app/Profile/page_client-reference-manifest.js
+/StoryQuest/.next/server/app/page_client-reference-manifest.js
+/StoryQuest/.next/server/pages-manifest 2.json
+/StoryQuest/.next/react-loadable-manifest 2.json
+/StoryQuest/.next/server/app/favicon.ico/route.js
+/StoryQuest/.next/server/server-reference-manifest 2.js
+/StoryQuest/.next/server/server-reference-manifest 2.json
+/StoryQuest/.next/trace 2
+/StoryQuest/.next/static/webpack/webpack.3eb600ffa3f2a9ae.hot-update.js
+/StoryQuest/.next/static/webpack/webpack.8fdd9895844d0af7.hot-update.js
+/StoryQuest/.next/static/webpack/webpack.21cfb56259e6a53a.hot-update.js
+/StoryQuest/.next/static/webpack/webpack.c92a1eef49a754a0.hot-update.js
+/StoryQuest/.next/static/chunks/webpack.js
+/StoryQuest/.next/server/webpack-runtime.js
