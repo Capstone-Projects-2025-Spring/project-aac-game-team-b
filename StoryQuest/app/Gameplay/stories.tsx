@@ -1,8 +1,8 @@
 // The file where the stories will be imported from.
 
 //TO DO:
-//CHANGE THE IMAGE POSITIONS
-//ADDING ANIMATION
+
+
 //CHANGE THE SIZE OF THE PICTURES. NEED TO BE BIGGER
 //MAKE BETTER SENTENCE/STORIES
 //THE IMAGES IS SHOWING UP WITH A WHITE BACKGROUND
@@ -28,22 +28,22 @@ export interface StorySection {
         {
           phrase: "Look in the garden, there is a ___",
           words: {
-            mouse: { image: "mouse.svg", x: 50, y: 100 },
-            ladybug: {image: "ladybug.svg", x: 60, y:90},
+            mouse: { image: "mouse.svg", x: 50, y: 80},
+            ladybug: {image: "ladybug.svg", x: 60, y:80},
           },
         },
         {
           phrase: "And near the flowers, I see a ___",  // New sentence
           words: {
-            bee: { image: "bee.svg", x: 70, y:50},
-            butterfly: { image: "butterfly.svg", x: 70, y:50},
+            bee: { image: "bee.svg", x: 70, y:45},
+            butterfly: { image: "butterfly.svg", x: 70, y:45},
             //can add more words here
           },
         },
         {
           phrase: "The tree was full of ___.", // Another sentence
           words: {
-              apples: { image: "apples.svg", x: 80, y:20},
+              apple: { image: "apple.svg", x: 80, y:10},
               lanterns: { image: "lantern.svg", x: 80, y:20},
           }
         }
@@ -59,27 +59,29 @@ export interface StorySection {
           {
             phrase: "In the forest, I look in the sky and see a ___",
             words: {
-              bird: { image: "bird.svg", x: 0, y:0},
-              airplane: { image: "airplane.svg", x: 0, y:0},
+              bird: { image: "bird.svg", x: 50, y:10},
+              airplane: { image: "airplane.svg", x: 50, y:10},
             },
           },
           {
             phrase: "In the path there is a ___",  // New sentence
             words: {
-              bear: { image: "bear.svg", x: 0, y:0},
-              basket: { image: "basket.svg", x: 0, y:0},
+              bear: { image: "bear.svg", x: 40, y:80},
+              basket: { image: "basket.svg", x: 50, y:75},
             },
           },
           {
-            phrase: "And the ___ was sitting in the rock.", // Another sentence 
+            phrase: "And the ___ was sitting in the bush.", // Another sentence 
             words: {
-                boy: { image: "boy.svg", x: 0, y:0},
-                squirrel: { image: "Squirrel.svg", x: 0, y:0}
+                boy: { image: "boy.svg", x: 65, y:60},
+                squirrel: { image: "Squirrel.svg", x: 65, y:60}
             }
           }
           // ... more sections
         ],
       },
+      
+      
   ];
   
   export default stories;
