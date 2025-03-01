@@ -1,1 +1,6 @@
-{}
+{
+  "/page": "app/page.js",
+  "/Profile/page": "app/Profile/page.js",
+  "/JoinPage/page": "app/JoinPage/page.js",
+  "/Gameplay/page": "app/Gameplay/page.js"
+}
