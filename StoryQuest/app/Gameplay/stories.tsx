@@ -33,7 +33,6 @@ export interface StorySection {
             //below are tests to see if the keyboard is dynamically initiated correctly
             apple: {image: "apple.svg", x: 60, y:90},
             lantern: {image: "lantern.svg", x: 60, y:90},
-            cat: {image: "cat.svg", x: 60, y:90},
             dog: {image: "dog.svg", x: 60, y:90},
             bird: {image: "bird.svg", x: 60, y:90},
             bear: {image: "bear.svg", x: 60, y:90},
