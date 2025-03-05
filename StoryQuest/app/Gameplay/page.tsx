@@ -211,28 +211,6 @@ export default function Home() {
           </select>
         </div>
 
-        {/* Word Buttons OPTIONAL NOW*/}
-        <div className="flex gap-4">
-          {currentStory?.sections[currentSectionIndex]?.words &&
-            Object.keys(currentStory.sections[currentSectionIndex].words).map((word) => (
-              <button
-                key={word}
-                className="px-4 py-2 bg-blue-500 text-white rounded"
-                onClick={() => handleWordSelect(word)}
-              >
-                {word}
-              </button>
-            ))}
-        </div>
-        <button className="mt-4 px-4 py-2 bg-red-500 text-white rounded" onClick={handleAddImage}> 
-          Add word
-        </button>
-        {/* Next Section Button  OPTIONAL NOW TOO*/}
-        {currentStory?.sections.length > 1 && currentSectionIndex < currentStory.sections.length - 1 && (
-          <button className="mt-4 px-4 py-2 bg-green-500 text-white rounded" onClick={handleAddImage}>
-            Next Sentence
-          </button>
-        )}
         {/*Hear Phrase button */}
            {/*
            <p className="mt-4 px-4 py-2 bg-red-500 text-white rounded">
