@@ -4,6 +4,7 @@ import TextToSpeechCompletedStory from "@/Components/TextToSpeechCompletedStory"
 interface TextToSpeechCompletedStoryProps {
     index: number;
     completedPhrases: string[];
+    //completedPhrase: string;// i think you need this Molly maybe?
 }
 
 {/*Button that text to speech all lines of the story*/}
