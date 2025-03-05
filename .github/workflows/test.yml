@@ -25,6 +25,9 @@ jobs:
         cache: 'npm'
         cache-dependency-path: './StoryQuest/package-lock.json'
 
+    - name: Install dependencies
+      run: npm install
+
     - name: Debug Node.js version
       run: node -v
 
@@ -33,9 +36,6 @@ jobs:
 
     - name: Debug installed dependencies
       run: npm list --depth=0
-
-    - name: Install dependencies
-      run: npm install
       
     - name: Run tests
       run: npm test -- --watchAll=false --verbose
