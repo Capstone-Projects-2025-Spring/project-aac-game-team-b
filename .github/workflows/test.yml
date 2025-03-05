@@ -1,4 +1,4 @@
-# this is an old test, locally it is working, but not on github
+# locally it is working, but not on github
 name: Run Tests
 
 on:

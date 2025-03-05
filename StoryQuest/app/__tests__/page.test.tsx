@@ -1,5 +1,5 @@
 import {render, screen, fireEvent} from '@testing-library/react';
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom';
 import AnimatedTitle from "@/HomePage/AnimatedTitle";
 import Footer from '../../app/page';
 import {ProfileButton, CreateButton, JoinButton, TemporaryTestingGameButton} from "@/HomePage/HomePageButtons";
