@@ -1,5 +1,5 @@
 import React from "react";
-
+// edit to see if that old branch is there
  interface AACKeyboardProps {
    onSelect: (word: string) => void; // Function to send selected word back
    symbols: { word: string; image: string }[];//required symbols now
