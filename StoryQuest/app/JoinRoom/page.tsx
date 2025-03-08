@@ -2,18 +2,39 @@
 
 import React, { useState } from "react";
 import Link from 'next/link';
+import { db } from "../../firebaseControls/firebaseConfig";
+import { collection, getDoc, doc } from "firebase/firestore"; 
 import "../CreateRoom/CreateRoomButtonStyles.css";
 import { BackButton } from "../HomePage/HomePageButtons";
 
 export default function JoinRoomPage() {
     const [roomId, setRoomId] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const handleJoinRoom = () => {
+    const handleJoinRoom = async () => {
         if (!roomId) {
             alert("Please enter a room ID.");
             return;
         }
-        alert("Room Joined.");
+
+        setLoading(true);
+
+        try {
+            const roomRef = doc(db, "rooms", roomId);
+            const roomSnap = await getDoc(roomRef);
+
+            if (roomSnap.exists()) {
+                alert(`Room joined. Room ID: ${roomId}`);
+            } else {
+                alert("Room not found. Please enter a valid room ID.");
+            }
+        } catch (error) {
+            console.error("Error joining room:", error);
+            alert("Error joining room. Please try again.");
+        } finally {
+            setLoading(false);
+        }
+        
     };
 
     return (
@@ -38,8 +59,8 @@ export default function JoinRoomPage() {
 
             {/* Join Room Button */}
             <div className="button-container">
-                <button className="button create-room-button" onClick={handleJoinRoom}>
-                    <span>Join Room</span>
+                <button className="button create-room-button" onClick={handleJoinRoom} disabled={loading}>
+                    {loading ? "Joining..." : "Join Room"}
                 </button>
             </div>
 

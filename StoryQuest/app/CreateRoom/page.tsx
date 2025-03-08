@@ -2,6 +2,9 @@
 
 import React, { useState, useEffect } from "react";
 import Link from 'next/link';
+import { useRouter } from "next/navigation";
+import { db } from "../../firebaseControls/firebaseConfig";
+import { collection, addDoc } from "firebase/firestore"; 
 import { BackButton } from "../HomePage/HomePageButtons";
 import "./CreateRoomButtonStyles.css";
 
@@ -10,15 +13,39 @@ export default function CreateRoomPage() {
     const [selectedStory, setSelectedStory] = useState<string | null>(null);
     const [numPlayers, setNumPlayers] = useState<number | null>(null);
     const [difficultyLevel, setDifficultyLevel] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
+
+    const router = useRouter();
 
     {/*Handles case where user does not choose all settings*/}
-    const handleCreateRoom = () => {
+    const handleCreateRoom = async () => {
         if (!selectedStory || !numPlayers || !difficultyLevel) {
             alert("Please select a story, player count, and difficulty.");
             return;
         }
+
+        setLoading(true);
+
+        try {
+            const hostName = `Player${Math.floor(Math.random() * 1000)}`;
+
+            const docRef = await addDoc(collection(db, "rooms"), {
+                selectedStory,
+                numPlayers,
+                difficultyLevel,
+                players: [hostName],
+                createdAt: new Date(),
+            });
+            alert(`Room created. Room ID: ${docRef.id}`);
+        } catch (error) {
+            console.error("Could not create room:", error);
+            alert("Error creating room. Please try again.")
+        } finally {
+            setLoading(false);
+        }
         console.log("Room Created:", { selectedStory, numPlayers, difficultyLevel });
     };
+
 
     const handleStoryClick = (story: string) => {
         console.log("Clicked:", story);
@@ -80,8 +107,8 @@ export default function CreateRoomPage() {
 
             {/* Create Room Button */}
             <div className="button-container">
-                <button className="button create-room-button" onClick={handleCreateRoom}>
-                    <span>Create Room</span>
+                <button className="button create-room-button" onClick={handleCreateRoom} disabled={loading}>
+                    {loading ? "Creating..." : "Create Room"}
                 </button>
             </div>
 

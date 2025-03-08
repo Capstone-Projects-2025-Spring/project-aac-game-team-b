@@ -3,6 +3,7 @@
  * This file sets up the Firebase client SDK and exports the Firestore instance.
  */
 
+import { getAnalytics } from "firebase/analytics";
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
@@ -26,6 +27,7 @@ const firebaseConfig = {
  * Initialize Firebase app.
  */
 const app = initializeApp(firebaseConfig);
+//const analytics = getAnalytics(app);
 
 /**
  * Get Firestore instance.
