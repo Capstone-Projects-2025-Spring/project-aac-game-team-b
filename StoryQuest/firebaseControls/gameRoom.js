@@ -12,31 +12,36 @@
  * **Response:** `{ roomId: string }` on success, or an error message
  */
 
+
 const functions = require("firebase-functions"); // Firebase Functions SDK
 const admin = require("firebase-admin"); // Firebase Admin SDK for Firestore access
+const cors = require("cors")({ origin: true });
 
 // Initialize Firebase Admin SDK (required for Firestore access)
 admin.initializeApp();
 const db = admin.firestore();
 
-exports.createRoom = functions.https.onCall(async (data, context) => {
-    try {
-        // Create a new document reference in the "rooms" collection with a unique ID
-        const newRoomRef = db.collection("rooms").doc();
-        const roomId = newRoomRef.id;
+exports.createRoom = functions.https.onRequest(async (req, res) => {
+    cors(req, res, async () => { // ✅ Apply CORS middleware
+        if (req.method !== "POST") {
+            return res.status(405).json({ error: "Method Not Allowed" });
+        }
 
-        // Set the initial room data in Firestore
-        await newRoomRef.set({
-            gameState: "waiting", // Initial game state
-            players: {}, // Empty object to store player details
-            host: context.auth?.uid || "anonymous", // Assign host, default to "anonymous" if no auth
-            storyProgress: {} // Placeholder for story progression data
-        });
+        try {
+            const newRoomRef = db.collection("rooms").doc();
+            const roomId = newRoomRef.id;
 
-        // Return the created room ID
-        return { roomId };
-    } catch (error) {
-        console.error("Error creating room:", error); // Log error details
-        throw new functions.https.HttpsError("internal", "Error creating room."); // Return generic error to client
-    }
+            await newRoomRef.set({
+                gameState: "waiting",
+                players: {},
+                host: "anonymous",
+                storyProgress: {},
+            });
+
+            res.status(200).json({ roomId }); // ✅ Return JSON response
+        } catch (error) {
+            console.error("Error creating room:", error);
+            res.status(500).json({ error: "Internal Server Error" }); // ✅ Return error response
+        }
+    });
 });

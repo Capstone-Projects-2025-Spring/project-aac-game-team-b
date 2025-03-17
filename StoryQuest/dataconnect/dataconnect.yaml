@@ -1,0 +1,12 @@
+specVersion: "v1beta"
+serviceId: "StoryQuest"
+location: "northamerica-northeast1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "fdcdb"
+      cloudSql:
+        instanceId: "storyquest-fdc"
+      # schemaValidation: "COMPATIBLE"
+connectorDirs: ["./connector"]

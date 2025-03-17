@@ -4,9 +4,13 @@ import React, { useState, useEffect } from "react";
 import Link from 'next/link';
 import { useRouter } from "next/navigation";
 import { db } from "../../firebaseControls/firebaseConfig";
+import { doc, setDoc } from "firebase/firestore"; 
 import { collection, addDoc } from "firebase/firestore"; 
+import { getFunctions, httpsCallable } from "firebase/functions";
+import { functions } from "../../firebaseControls/firebaseConfig";
 import { BackButton } from "../HomePage/HomePageButtons";
 import "./CreateRoomButtonStyles.css";
+
 
 
 export default function CreateRoomPage() {
@@ -15,35 +19,41 @@ export default function CreateRoomPage() {
     const [difficultyLevel, setDifficultyLevel] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
 
+    //const functions = getFunctions();
+    const createRoomFunction = httpsCallable(functions, "createRoom"); // No input type required
+
     const router = useRouter();
+
+    /*const testFirestore = async () => {
+        try {
+          const docRef = await addDoc(collection(db, "test"), { test: "success" });
+          console.log("Test Doc ID:", docRef.id);
+        } catch (error) {
+          console.error("Firestore error:", error);
+        }
+      };
+      useEffect(() => { testFirestore(); }, []);*/
 
     {/*Handles case where user does not choose all settings*/}
     const handleCreateRoom = async () => {
-        if (!selectedStory || !numPlayers || !difficultyLevel) {
-            alert("Please select a story, player count, and difficulty.");
-            return;
-        }
-
-        setLoading(true);
-
         try {
-            const hostName = `Player${Math.floor(Math.random() * 1000)}`;
-
-            const docRef = await addDoc(collection(db, "rooms"), {
-                selectedStory,
-                numPlayers,
-                difficultyLevel,
-                players: [hostName],
-                createdAt: new Date(),
+            const response = await fetch("https://us-central1-storyquest-fcdc2.cloudfunctions.net/createRoom", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({}),
             });
-            alert(`Room created. Room ID: ${docRef.id}`);
+    
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+    
+            const data = await response.json();
+            console.log("Room Created:", data.roomId);
+            alert(`Room created. Room ID: ${data.roomId}`);
         } catch (error) {
             console.error("Could not create room:", error);
-            alert("Error creating room. Please try again.")
-        } finally {
-            setLoading(false);
+            alert("Error creating room. Please try again.");
         }
-        console.log("Room Created:", { selectedStory, numPlayers, difficultyLevel });
     };
 
 
