@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Link from 'next/link';
 import { BackButton } from "../HomePage/HomePageButtons";
+import { db } from "../../firebaseControls/firebaseConfig"; // Import Firestore
+import { collection, addDoc } from "firebase/firestore";
 import "./CreateRoomButtonStyles.css";
 
 
@@ -10,14 +12,31 @@ export default function CreateRoomPage() {
     const [selectedStory, setSelectedStory] = useState<string | null>(null);
     const [numPlayers, setNumPlayers] = useState<number | null>(null);
     const [difficultyLevel, setDifficultyLevel] = useState<string | null>(null);
+    const [loading, setLoading] = useState(false);
 
     {/*Handles case where user does not choose all settings*/}
-    const handleCreateRoom = () => {
+    const handleCreateRoom = async () => {
         if (!selectedStory || !numPlayers || !difficultyLevel) {
             alert("Please select a story, player count, and difficulty.");
             return;
         }
-        console.log("Room Created:", { selectedStory, numPlayers, difficultyLevel });
+
+        try {
+            // Add room data to Firestore
+            const docRef = await addDoc(collection(db, "rooms"), {
+                story: selectedStory,
+                numPlayers: numPlayers,
+                difficulty: difficultyLevel,
+            });
+
+            console.log("Room Created with ID:", docRef.id);
+            alert(`Room Created! Room ID: ${docRef.id}`);
+        } catch (error) {
+            console.error("Error creating room:", error);
+            alert("Failed to create room.");
+        }
+
+        setLoading(false);
     };
 
     const handleStoryClick = (story: string) => {

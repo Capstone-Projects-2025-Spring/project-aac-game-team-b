@@ -4,7 +4,7 @@
  */
 
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore, connectFirestoreEmulator } from "firebase/firestore";
 
 /**
  * Firebase configuration object.
@@ -32,6 +32,7 @@ const app = initializeApp(firebaseConfig);
  */
 const db = getFirestore(app);
 
+  
 /**
  * Export the initialized Firestore instance.
  * This instance can be imported and used in other modules.
