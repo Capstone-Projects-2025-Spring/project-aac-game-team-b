@@ -22,7 +22,7 @@ admin.initializeApp();
 const db = admin.firestore();
 
 exports.createRoom = functions.https.onRequest(async (req, res) => {
-    cors(req, res, async () => { // ✅ Apply CORS middleware
+    cors(req, res, async () => { 
         if (req.method !== "POST") {
             return res.status(405).json({ error: "Method Not Allowed" });
         }
@@ -38,10 +38,10 @@ exports.createRoom = functions.https.onRequest(async (req, res) => {
                 storyProgress: {},
             });
 
-            res.status(200).json({ roomId }); // ✅ Return JSON response
+            res.status(200).json({ roomId }); 
         } catch (error) {
             console.error("Error creating room:", error);
-            res.status(500).json({ error: "Internal Server Error" }); // ✅ Return error response
+            res.status(500).json({ error: "Internal Server Error" }); 
         }
     });
 });

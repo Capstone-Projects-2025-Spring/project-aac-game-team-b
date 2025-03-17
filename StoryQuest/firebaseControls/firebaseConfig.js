@@ -15,13 +15,13 @@ import { getFunctions } from "firebase/functions";
  * Keys must be prefixed with `NEXT_PUBLIC_` for client-side access in Next.js.
  */
 const firebaseConfig = {
-    apiKey: "AIzaSyAsVIc_e8eRPEd8bzxQmhlwQsMeRS0QgJY",
-    authDomain: "storyquest-fcdc2.firebaseapp.com",
-    databaseURL: "https://storyquest-fcdc2-default-rtdb.firebaseio.com",
-    projectId:"storyquest-fcdc2",
-    storageBucket: "storyquest-fcdc2.firebasestorage.app",
-    messagingSenderId: "964622344106",
-    appId: "1:964622344106:web:5ba7c9e6494db93a62d5d3",
+    apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+    authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+    databaseURL: process.env.NEXT_PUBLIC_FIREBASE_DATABASE_URL,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
     measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
