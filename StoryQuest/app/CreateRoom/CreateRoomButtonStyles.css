@@ -84,6 +84,7 @@
     border-radius: 12px;
     padding: 1rem;
     font-size: 1.3rem;
+    color: #4a6baf;
     cursor: pointer;
     transition: all 0.3s;
     display: flex;
@@ -184,6 +185,7 @@
   .summary-item {
     margin: 0.5rem 0;
     font-size: 1.2rem;
+    color: #4a6baf;
   }
   
   /* Create room button */

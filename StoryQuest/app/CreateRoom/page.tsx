@@ -127,24 +127,21 @@ export default function CreateRoomPage() {
                                 className="big-button difficulty-button easy"
                                 onClick={() => handleDifficultyClick("Easy")}
                             >
-                                <span className="difficulty-emoji">😃</span>
-                                <span>Easy Peasy</span>
+                                <span>Easy</span>
                             </button>
                             
                             <button 
                                 className="big-button difficulty-button medium"
                                 onClick={() => handleDifficultyClick("Medium")}
                             >
-                                <span className="difficulty-emoji">😐</span>
-                                <span>Just Right</span>
+                                <span>Medium</span>
                             </button>
                             
                             <button 
                                 className="big-button difficulty-button hard"
                                 onClick={() => handleDifficultyClick("Hard")}
                             >
-                                <span className="difficulty-emoji">🤔</span>
-                                <span>Brain Puzzler</span>
+                                <span>Hard</span>
                             </button>
                         </div>
                         <button className="back-step-button" onClick={goBack}>
