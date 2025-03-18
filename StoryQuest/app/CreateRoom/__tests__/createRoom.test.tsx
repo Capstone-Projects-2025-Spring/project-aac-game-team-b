@@ -1,6 +1,13 @@
+<<<<<<< HEAD
 import { render, screen, fireEvent } from "@testing-library/react"; 
 import CreateRoomPage from "../page"; 
 import '@testing-library/jest-dom';
+=======
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
+import CreateRoomPage from "../page"; 
+import '@testing-library/jest-dom';
+import useSound from 'use-sound';
+>>>>>>> main
 
 beforeEach(() => {
     jest.spyOn(console, "log").mockImplementation(() => {});
@@ -94,6 +101,7 @@ describe("CreateRoomPage", () => {
         expect(screen.getByText("How Many Friends Are Playing?")).toBeInTheDocument();
     });
 
+<<<<<<< HEAD
     test("final review screen shows correct selections", () => {
         render(<CreateRoomPage />);
         
@@ -130,5 +138,64 @@ describe("CreateRoomPage", () => {
         
         // Check that summary has been updated
         expect(screen.getByText("Level: Medium")).toBeInTheDocument();
+=======
+});
+
+// mock use-sound
+jest.mock('use-sound', () => ({
+    __esModule: true,
+    default: jest.fn(() => [jest.fn()]),
+}));
+
+describe('Create room button sound effects', () => {
+    let mockUseSound: jest.Mock;
+
+    it('plays button sound when a story is selected', () => {
+        const play = jest.fn();
+        (useSound as jest.Mock).mockReturnValue([play]);
+
+        render(<CreateRoomPage />);
+
+        const storyButton = screen.getByRole('button', { name: /The Garden Adventure/i });
+        fireEvent.click(storyButton);
+
+        expect(play).toHaveBeenCalledTimes(1);
+    });
+
+    it('plays button sound when a player count is selected', () => {
+        const play = jest.fn();
+        (useSound as jest.Mock).mockReturnValue([play]);
+
+        render(<CreateRoomPage />);
+
+        const playerButton = screen.getByRole('button', { name: /2 Players/i });
+        fireEvent.click(playerButton);
+
+        expect(play).toHaveBeenCalledTimes(1);
+    });
+
+    it('plays button sound when a difficulty is selected', () => {
+        const play = jest.fn();
+        (useSound as jest.Mock).mockReturnValue([play]);
+
+        render(<CreateRoomPage />);
+
+        const difficultyButton = screen.getByRole('button', { name: /Easy/i });
+        fireEvent.click(difficultyButton);
+
+        expect(play).toHaveBeenCalledTimes(1);
+    });
+
+    it('plays button sound when the create room button is clicked', () => {
+        const play = jest.fn();
+        (useSound as jest.Mock).mockReturnValue([play]);
+
+        render(<CreateRoomPage />);
+
+        const createRoomButton = screen.getByRole('button', { name: /Create Room/i });
+        fireEvent.click(createRoomButton);
+
+        expect(play).toHaveBeenCalledTimes(1);
+>>>>>>> main
     });
 });
