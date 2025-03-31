@@ -1,9 +1,9 @@
 // firestoreUtils.ts
 
 import { initializeApp } from "firebase/app";
-import { getFirestore, collection, addDoc } from "firebase/firestore";
-import { Story } from '../app/Gameplay/stories';
-
+import { getFirestore, collection, addDoc, setDoc, doc } from "firebase/firestore";
+import { Story } from '../app/Gameplay/stories'; // Import the Story interface
+import stories from '../app/Gameplay/stories'; // Import your stories array
 
 // Firebase config
 const firebaseConfig = {
@@ -64,3 +64,42 @@ async function uploadStoriesToFirestore(stories: Story[]) {
     }
 }
 
+//
+
+async function addStoriesToFirestoreWithSet(stories: Story[]) {
+    try {
+        const storiesCollection = collection(db, "stories");
+
+        for (let i = 0; i < stories.length; i++) {
+            const story = stories[i];
+            const storyId = `story-${i + 1}`;
+            const storyDocRef = doc(storiesCollection, storyId);
+
+            console.log(`Uploading story with ID: ${storyId}`);
+            console.log("Story data:", story);
+            console.log("Stringified story:", JSON.stringify(story, null, 2));
+
+            // Log the words object and image paths
+            story.sections.forEach((section) => {
+                console.log("Words object:", section.words);
+                console.log("Stringified words object:", JSON.stringify(section.words, null, 2));
+                for (const wordKey in section.words) {
+                    if (section.words.hasOwnProperty(wordKey)) {
+                        console.log(`Image path for ${wordKey}:`, section.words[wordKey].image);
+                    }
+                }
+            });
+
+            await setDoc(storyDocRef, story);
+            console.log(`Story "${story.title}" added with ID: ${storyId}`);
+        }
+
+        console.log("All stories added to Firestore.");
+    } catch (error: any) {
+        console.error("Error adding stories to Firestore:", error);
+        console.error("Error Details:", error.details);
+        console.error("Error Code:", error.code);
+    }
+}
+
+addStoriesToFirestoreWithSet(stories); // Call the function with the stories array.

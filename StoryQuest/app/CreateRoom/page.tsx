@@ -136,6 +136,21 @@ export default function CreateRoomPage() {
                                 />
                                 <span>Walk in the Forest</span>
                             </button>
+
+                            <button
+                                className="big-button story-button"
+                                onClick={() => {
+                                    handleStoryClick("Space Adventure");
+                                    playSelectOptionClick();
+                                }}
+                            >
+                                <img
+                                    src="/images/space-background.svg"
+                                    alt="Space"
+                                    className="button-icon"
+                                />
+                                <span>Space Adventure</span>
+                            </button>
                         </div>
                     </div>
                 )}
