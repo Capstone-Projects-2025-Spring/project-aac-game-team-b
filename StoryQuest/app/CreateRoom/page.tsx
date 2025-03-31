@@ -1,19 +1,35 @@
 "use client";
 
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import Link from 'next/link';
 import { BackButton } from "../HomePage/HomePageButtons";
 import { db } from "../../firebaseControls/firebaseConfig"; // Import Firestore
 import { collection, addDoc } from "firebase/firestore";
+import { QRCode } from "react-qrcode-logo";
 import "./CreateRoomButtonStyles.css";
-
+import useSound from "use-sound";
 
 export default function CreateRoomPage() {
+    // Button Sound effects
+    const createRoomClick = '/sounds/createroom-click.mp3';
+    const [playCreateRoomClick] = useSound(createRoomClick); // use sound hook
+    const selectOptionClick = '/sounds/select-click.mp3';
+    const [playSelectOptionClick] = useSound(selectOptionClick); // use sound hook
+    const goBackClick = '/sounds/back-click.mp3';
+    const [playGoBackClick] = useSound(goBackClick);
+
+    // Story Option Selection
     const [currentStep, setCurrentStep] = useState(1);
     const [selectedStory, setSelectedStory] = useState<string | null>(null);
     const [numPlayers, setNumPlayers] = useState<number | null>(null);
     const [difficultyLevel, setDifficultyLevel] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+    const [roomId, setRoomId] = useState<string | null>(null);
+    const [tooltip, setTooltip] = useState<string | null>(null);
+
+
+    const router = useRouter();
 
     const handleStoryClick = (story: string) => {
         setSelectedStory(story);
@@ -31,6 +47,7 @@ export default function CreateRoomPage() {
     };
 
     const handleCreateRoom = async () => {
+        setLoading(true);
         try {
             // Add room data to Firestore
             const docRef = await addDoc(collection(db, "rooms"), {
@@ -39,16 +56,17 @@ export default function CreateRoomPage() {
                 difficulty: difficultyLevel,
             });
 
+            //setRoomId(docRef.id); // Store room ID
             console.log("Room Created with ID:", docRef.id);
+            setRoomId(docRef.id);
             alert(`Room Created! Room ID: ${docRef.id}`);
+            router.push(`/CreateRoom/qrcode?roomId=${docRef.id}`);
         } catch (error) {
             console.error("Error creating room:", error);
             alert("Failed to create room.");
+        } finally {
+            setLoading(false);
         }
-
-        setLoading(false);
-        console.log("Room Created:", { selectedStory, numPlayers, difficultyLevel });
-        // Here you would add your room creation logic
     };
 
     const goBack = () => {
@@ -59,11 +77,15 @@ export default function CreateRoomPage() {
 
     return (
         <div className="page-container"
-             style={{
-                 backgroundImage: "url('/HomePage-Images/Background.jpg')",
-                 backgroundSize: "cover",
-             }}>
-            <div className="content-container"> 
+            style={{
+                backgroundImage: "url('/HomePage-Images/Background.jpg')",
+                backgroundSize: "cover",
+            }}>
+
+            {/*create room page Description text to speech*/}
+            {/*<AutomaticTextToSpeech speechText="Please select story options" />*/}
+
+            <div className="content-container">
                 <div className="title-container">
                     <h1 className="title-text">Let's Create a Game!</h1>
                 </div>
@@ -71,8 +93,8 @@ export default function CreateRoomPage() {
                 {/* Progress Indicators - Visual cues for children */}
                 <div className="progress-container">
                     {[1, 2, 3, 4].map((step) => (
-                        <div 
-                            key={step} 
+                        <div
+                            key={step}
                             className={`progress-bubble ${currentStep >= step ? "active" : ""}`}
                         >
                             {step}
@@ -85,25 +107,31 @@ export default function CreateRoomPage() {
                     <div className="step-container">
                         <h2>Choose Your Story</h2>
                         <div className="big-button-container">
-                            <button 
+                            <button
                                 className="big-button story-button"
-                                onClick={() => handleStoryClick("The Garden Adventure")}
+                                onClick={() => {
+                                    handleStoryClick("The Garden Adventure");
+                                    playSelectOptionClick();
+                                }}
                             >
-                                <img 
-                                    src="/images/garden-background.webp" 
-                                    alt="Garden" 
+                                <img
+                                    src="/images/garden-background.webp"
+                                    alt="Garden"
                                     className="button-icon"
                                 />
                                 <span>The Garden Adventure</span>
                             </button>
-                            
-                            <button 
+
+                            <button
                                 className="big-button story-button"
-                                onClick={() => handleStoryClick("Walk in the Forest")}
+                                onClick={() => {
+                                    handleStoryClick("Walk in the Forest");
+                                    playSelectOptionClick();
+                                }}
                             >
-                                <img 
-                                    src="/images/Forest-background.png" 
-                                    alt="Forest" 
+                                <img
+                                    src="/images/Forest-background.png"
+                                    alt="Forest"
                                     className="button-icon"
                                 />
                                 <span>Walk in the Forest</span>
@@ -118,10 +146,13 @@ export default function CreateRoomPage() {
                         <h2>How Many Friends Are Playing?</h2>
                         <div className="big-button-container">
                             {[2, 3, 4].map((num) => (
-                                <button 
-                                    key={num} 
+                                <button
+                                    key={num}
                                     className="big-button player-button"
-                                    onClick={() => handlePlayerClick(num)}
+                                    onClick={() => {
+                                        handlePlayerClick(num);
+                                        playSelectOptionClick();
+                                    }}
                                 >
                                     <div className="player-icons">
                                         {[...Array(num)].map((_, index) => (
@@ -132,7 +163,10 @@ export default function CreateRoomPage() {
                                 </button>
                             ))}
                         </div>
-                        <button className="back-step-button" onClick={goBack}>
+                        <button className="back-step-button" onClick={() => {
+                            playGoBackClick();
+                            goBack();
+                        }}>
                             Go Back
                         </button>
                     </div>
@@ -143,28 +177,51 @@ export default function CreateRoomPage() {
                     <div className="step-container">
                         <h2>Pick How Challenging</h2>
                         <div className="big-button-container">
-                            <button 
+                            <button
                                 className="big-button difficulty-button easy"
-                                onClick={() => handleDifficultyClick("Easy")}
+                                onClick={() => {
+                                    handleDifficultyClick("Easy");
+                                    playSelectOptionClick();
+                                }}
+                                onMouseEnter={() => setTooltip("Easy mode: 3 sentences")}
+                                onMouseLeave={() => setTooltip(null)}
+                                onTouchStart={() => setTooltip("Easy mode: 3 sentences")}
                             >
                                 <span>Easy</span>
+                                {tooltip === "Easy mode: 3 sentences" && <span className="tooltip">{tooltip}</span>}
                             </button>
-                            
-                            <button 
+
+                            <button
                                 className="big-button difficulty-button medium"
-                                onClick={() => handleDifficultyClick("Medium")}
+                                onClick={() => {
+                                    handleDifficultyClick("Medium");
+                                    playSelectOptionClick();
+                                }}
+                                onMouseEnter={() => setTooltip("Medium mode: 5 sentences")}
+                                onMouseLeave={() => setTooltip(null)}
+                                onTouchStart={() => setTooltip("Medium mode: 5 sentences")}
                             >
                                 <span>Medium</span>
+                                {tooltip === "Medium mode: 5 sentences" && <span className="tooltip">{tooltip}</span>}
                             </button>
-                            
-                            <button 
+                            <button
                                 className="big-button difficulty-button hard"
-                                onClick={() => handleDifficultyClick("Hard")}
+                                onClick={() => {
+                                    handleDifficultyClick("Hard");
+                                    playSelectOptionClick();
+                                }}
+                                onMouseEnter={() => setTooltip("Hard mode: 10 sentences")}
+                                onMouseLeave={() => setTooltip(null)}
+                                onTouchStart={() => setTooltip("Hard mode: 10 sentences")}
                             >
                                 <span>Hard</span>
+                                {tooltip === "Hard mode: 10 sentences" && <span className="tooltip">{tooltip}</span>}
                             </button>
                         </div>
-                        <button className="back-step-button" onClick={goBack}>
+                        <button className="back-step-button" onClick={() => {
+                            playGoBackClick();
+                            goBack();
+                        }}>
                             Go Back
                         </button>
                     </div>
@@ -186,11 +243,17 @@ export default function CreateRoomPage() {
                             </div>
                         </div>
                         <div className="final-buttons">
-                            <button className="big-button create-room-button" onClick={handleCreateRoom}>
+                            <button className="big-button create-room-button" onClick={() => {
+                                handleCreateRoom();
+                                playCreateRoomClick();
+                            }}>
                                 <span className="create-emoji">🎮</span>
                                 <span>Start Adventure!</span>
                             </button>
-                            <button className="back-step-button" onClick={goBack}>
+                            <button className="back-step-button" onClick={() => {
+                                playGoBackClick();
+                                goBack();
+                            }}>
                                 Change Something
                             </button>
                         </div>
@@ -199,7 +262,7 @@ export default function CreateRoomPage() {
 
                 {/* Home Button - Always visible */}
                 {(currentStep !== 1 && currentStep !== 4) ? null : (
-                    <div className="home-button-container">
+                    <div className="home-button-container button-box">
                         <Link href="/">
                             <BackButton />
                         </Link>

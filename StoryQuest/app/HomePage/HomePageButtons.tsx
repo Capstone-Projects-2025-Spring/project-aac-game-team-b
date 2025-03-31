@@ -15,18 +15,22 @@ export const CreateButton: React.FC = () => {
     const [play]= useSound(popClick); // use sound hook, play sound, has to be inside component
 
     return (
-        <button className="button join-button" onClick={() => play()}>
-            <Image
-                src="/circleplus-icon.svg"
+        <div className="button-with-attached-circle">
+            <div className="button-circle">
+                <div className="svg-icon">
+                <Image
+                src="/plus-icon.svg"
                 alt="Creating a room icon"
                 // This changes the width and height of the svg
-                width={30}
-                height={30}
-                className="icon-spacing"
+                width={60}
+                height={60}
             />
-
+            </div>
+            </div>
+            <button className="button create-button" onClick={() => play()}>
             <span>Create</span>
         </button>
+        </div>
     );
 };
 
@@ -35,52 +39,60 @@ export const JoinButton: React.FC = () => {
     const [play]= useSound(popClick); // use sound hook, play sound
 
     return (
-        <button className="button create-button" onClick={() => play()}>
-            <Image
-                src="/game-icon.svg"
-                alt="Joining a room icon"
-                width={30}
-                height={30}
-                className="icon-spacing"
-            />
-            <span>Join</span>
-        </button>
+        <div className="button-with-attached-circle">
+            <div className="button-circle">
+                <div className="svg-icon">
+                <Image
+                    src="/qr-icon.svg"
+                    alt="qr join icon"
+                    width={60}
+                    height={55}
+                />
+            </div>
+            </div>
+            <button className="button join-button" onClick={() => play()}>
+                <span>Join</span>
+            </button>
+        </div>
     );
 };
 
-/*Back Button - Used on Create Room Page */
+/*Back Button - Used on Create Room Page and join room page */
 export const BackButton: React.FC = () => {
     const [play]= useSound(backClick); // use sound hook, play sound
 
     return (
         <button className="button back-button" onClick={() => play()}>
+            <div className="svg-icon">
             <Image
-                src="/pics/backspace.svg"
-                alt="Backspace icon"
-                width={30}
-                height={30}
+                src="/back-icon.svg"
+                alt="back icon"
+                width={40}
+                height={40}
                 className="icon-spacing"
             />
+            </div>
             <span>Back</span>
         </button>
     );
 };
 
-
-/*Profile button*/
-export const ProfileButton: React.FC = () => {
-    const [play]= useSound(popClick); // use sound hook, play sound
+/*Home Button - Used on Create Room Page */
+export const HomeButton: React.FC = () => {
+    const [play]= useSound(backClick); // use sound hook, play sound
 
     return (
-        <button className="button profile-button" onClick={() => play()}>
+        <button className="button home-button" onClick={() => play()}>
+            <div className="svg-icon">
             <Image
-                src="/profile-icon.svg"
-                alt="profile icon"
-                width={30}
-                height={30}
+                src="/home-icon.svg"
+                alt="Home page icon"
+                width={50}
+                height={50}
                 className="icon-spacing"
             />
-            <span>Profile</span>
+            </div>
+            <span>Home</span>
         </button>
     );
 };
@@ -93,8 +105,20 @@ export const TemporaryTestingGameButton: React.FC = () => {
     const [playGameplayStart]= useSound(gameplayStart); // use sound hook
 
     return (
+        <div className="button-with-attached-circle">
+            <div className="button-circle">
+                <div className="svg-icon">
+                <Image
+                    src="/test.svg"
+                    alt="gameplay test icon"
+                    width={50}
+                    height={50}
+                />
+                </div>
+            </div>
         <button className="button test-button" onClick={() => playGameplayStart()}>
-            <span>Gameplay</span>
+            <span>Game</span>
         </button>
+    </div>
     );
 };

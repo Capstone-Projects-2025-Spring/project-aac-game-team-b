@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 
 interface TextToSpeechCompletedStoryProps {
     text: string;
+    onComplete?: () => void; // when text to speech is done
 }
 
 
 // Text to speech phrases component
-const TextToSpeechCompletedStory: React.FC<TextToSpeechCompletedStoryProps> = ({ text }) => {
+const TextToSpeechTextOnly: React.FC<TextToSpeechCompletedStoryProps> = ({ text, onComplete }) => {
     const [utterance, setUtterance] = useState<SpeechSynthesisUtterance | null>(null);
     const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
 
@@ -50,13 +51,20 @@ const TextToSpeechCompletedStory: React.FC<TextToSpeechCompletedStoryProps> = ({
             const synth = window.speechSynthesis;
 
             if (text) {
-                const u = new SpeechSynthesisUtterance(text);
+                const u = new SpeechSynthesisUtterance(text.replace(/_/g, ' '));
 
                 // Set the selected voice
                 u.voice = selectedVoice;
 
                 // Update speech rate to 0.9
                 u.rate = 0.9;
+
+                // onend event listener
+                u.onend = () => {
+                    if (onComplete) {
+                        onComplete(); // Trigger the callback when TTS is done
+                    }
+                };
 
                 // Play speech
                 synth.speak(u);
@@ -72,4 +80,4 @@ const TextToSpeechCompletedStory: React.FC<TextToSpeechCompletedStoryProps> = ({
     return null;
 };
 
-export default TextToSpeechCompletedStory;
+export default TextToSpeechTextOnly;
