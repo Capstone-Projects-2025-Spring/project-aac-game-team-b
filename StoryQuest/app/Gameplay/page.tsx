@@ -13,7 +13,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import stories, { Story, StorySection } from "./stories";//import the stories interface
+import {stories, Story, StorySection } from "./stories";//import the stories interface
 import AACKeyboard from "../Components/AACKeyboard";
 import useSound from 'use-sound';
 import TextToSpeechAACButtons from "../Components/TextToSpeechAACButtons";

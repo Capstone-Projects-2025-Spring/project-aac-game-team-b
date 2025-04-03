@@ -1,18 +1,19 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.db = void 0;
+var app_1 = require("firebase/app");
+var firestore_1 = require("firebase/firestore");
 /**
  * Firebase configuration and initialization.
  * This file sets up the Firebase client SDK and exports the Firestore instance.
  */
-
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
-
 /**
  * Firebase configuration object.
  * Uses environment variables for API keys and other sensitive information.
  * Environment variables should be stored in a `.env.local` file.
  * Keys must be prefixed with `NEXT_PUBLIC_` for client-side access in Next.js.
  */
-const firebaseConfig = {
+var firebaseConfig = {
     apiKey: process.env.FIREBASE_API_KEY,
     authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
     projectId: "storyquest-fcdc2",
@@ -21,20 +22,12 @@ const firebaseConfig = {
     appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
     measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
-
 /**
  * Initialize Firebase app.
  */
-const app = initializeApp(firebaseConfig);
-
+var app = (0, app_1.initializeApp)(firebaseConfig);
 /**
  * Get Firestore instance.
  */
-const db = getFirestore(app);
-
-/**
- * Export the initialized Firestore instance.
- * This instance can be imported and used in other modules.
- */
-export { db };
-
+var db = (0, firestore_1.getFirestore)(app);
+exports.db = db;
