@@ -81,7 +81,7 @@ export default TextToSpeechTextOnly2;
 */
 
 import React, { useEffect, useState } from "react";
-
+import Stories from "../Gameplay/stories";
 interface TextToSpeechCompletedStoryProps {
   phrases: string[];  // Array of phrases to speak in sequence
   onComplete?: () => void;  // Callback when all phrases are spoken
