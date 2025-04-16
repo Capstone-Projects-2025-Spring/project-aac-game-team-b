@@ -83,16 +83,20 @@ export default TextToSpeechTextOnly2;
 import React, { useEffect, useState } from "react";
 
 interface TextToSpeechCompletedStoryProps {
-  text: string;
-  onComplete?: () => void;
+  phrases: string[];  // Array of phrases to speak in sequence
+  onComplete?: () => void;  // Callback when all phrases are spoken
+  onPhraseComplete?: (index: number) => void;  // Callback when each phrase is spoken
 }
 
 const TextToSpeechTextOnly2: React.FC<TextToSpeechCompletedStoryProps> = ({
-  text,
+  phrases,
   onComplete,
+  onPhraseComplete,
 }) => {
   const [selectedVoice, setSelectedVoice] = useState<SpeechSynthesisVoice | null>(null);
   const [isVoiceReady, setIsVoiceReady] = useState(false);
+  const [currentPhraseIndex, setCurrentPhraseIndex] = useState(0);
+  const [isSpeaking, setIsSpeaking] = useState(false);
 
   // Select preferred voice
   const selectVoice = () => {
@@ -133,29 +137,53 @@ const TextToSpeechTextOnly2: React.FC<TextToSpeechCompletedStoryProps> = ({
     };
   }, []);
 
-  // New: Speech execution with ready checks
-  useEffect(() => {
-    if (!text) return;
+// Speak the current phrase
+  const speakCurrentPhrase = () => {
+    if (!isVoiceReady || !selectedVoice || currentPhraseIndex >= phrases.length || isSpeaking) {
+      return;
+    }
 
-    const speakWhenReady = () => {
-      if (!window.speechSynthesis || !selectedVoice) {
-        setTimeout(speakWhenReady, 100);
-        return;
+    setIsSpeaking(true);
+    const currentPhrase = phrases[currentPhraseIndex];
+    
+    const utterance = new SpeechSynthesisUtterance(currentPhrase.replace(/_/g, " "));
+    utterance.voice = selectedVoice;
+    utterance.rate = 0.9;
+
+    utterance.onend = () => {
+      setIsSpeaking(false);
+      // Notify that this phrase is complete
+      onPhraseComplete?.(currentPhraseIndex);
+      
+      // Move to next phrase
+      if (currentPhraseIndex < phrases.length - 1) {
+        setCurrentPhraseIndex(prev => prev + 1);
+      } else {
+        // All phrases are done
+        onComplete?.();
       }
-
-      const utterance = new SpeechSynthesisUtterance(text.replace(/_/g, " "));
-      utterance.voice = selectedVoice;
-      utterance.rate = 0.9;
-
-      utterance.onend = () => onComplete?.();
-      utterance.onerror = (e) => console.warn("Speech error:", e);
-
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(utterance);
     };
 
-    speakWhenReady();
-  }, [text, selectedVoice, onComplete]);
+    utterance.onerror = (e) => {
+      console.warn("Speech error:", e);
+      setIsSpeaking(false);
+    };
+
+    window.speechSynthesis.cancel(); // cancel any ongoing speech
+    window.speechSynthesis.speak(utterance);
+  };
+
+  // Trigger speech when ready and when current phrase changes
+  useEffect(() => {
+    if (isVoiceReady && selectedVoice && phrases.length > 0) {
+      speakCurrentPhrase();
+    }
+  }, [currentPhraseIndex, isVoiceReady, selectedVoice, phrases]);
+
+  // Reset index when phrases change
+  useEffect(() => {
+    setCurrentPhraseIndex(0);
+  }, [phrases]);
 
   return null;
 };
