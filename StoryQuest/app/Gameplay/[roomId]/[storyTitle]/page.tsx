@@ -435,29 +435,38 @@ useEffect(() => {
               <div className="flex flex-col items-center justify-center mb-6 space-y-4">
                 <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
                   {Object.entries(playerAvatars)
-                  // sort by numeric player slot
-                  .sort(([a], [b]) => Number(a) - Number(b))
-                  .map(([num, avatar]) => (
-                    <div key={num} className="flex flex-col items-center">
-                      <span
-                        className={`text-5xl p-2 rounded-full ${
-                          currentTurn === Number(num)
-                            ? "border-4 border-green-500"
-                            : "border-2 border-gray-400"
-                        }`}
-                      >
-                        {avatar}
-                      </span>
-                      <span className="text-xl font-bold">{`Player ${num}`}</span>
-                    </div>
-                  ))}
+                    .sort(([a], [b]) => Number(a) - Number(b))
+                    .map(([num, avatar]) => {
+                      const slot = Number(num);
+                      const isActive = slot === currentTurn;
+                      return (
+                        <div key={num} className="flex flex-col items-center">
+                          <span
+                            className={`
+                              ${isActive ? "text-7xl p-4 border-4 ring-4 ring-yellow-300 scale-150 animate-pulse glow" 
+                                        : "text-5xl p-2 border-2 border-gray-400"}
+                              rounded-full 
+                            `}
+                            style={{ transition: "transform 0.3s ease-in-out" }}
+                          >
+                            {avatar}
+                          </span>
+                        </div>
+                      );
+                  })}
                 </div>
                 <div className="mt-4 text-center">
                   {playerNumber === currentTurn ? (
-                    <p className="text-4xl font-extrabold text-green-600 animate-pulse">✅ YOUR TURN!</p>
+                    <p className="text-4xl font-extrabold text-green-600 animate-pulse">
+                      ✅ YOUR TURN!
+                    </p>
                   ) : (
                     <p className="text-3xl text-gray-600">
-                      ⏳ Waiting for <span className="font-bold">Player {currentTurn}</span>...
+                      ⏳ Waiting for{" "}
+                      <span className="font-bold text-5xl inline-block">
+                        {playerAvatars[currentTurn]}
+                      </span>
+                      ...
                     </p>
                   )}
                 </div>
