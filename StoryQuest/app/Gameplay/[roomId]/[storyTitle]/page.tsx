@@ -84,6 +84,7 @@ export default function Home() {
   const [storyCompleted, setStoryCompleted] = useState(false); // Used as a check for the story completion overlay
   const [showOverlay, setShowOverlay] = useState(false); // Is shown after storycompleted = true, with a delay
   const [showBlockAACButtonOverlay, setShowBlockAACButtonOverlay] = useState(false); // Is shown at "The end!" phrase
+  const [showInitialPlayOverlay, setShowInitialPlayOverlay] = useState(true);
 
 //Grabbing roomID and story title from URL
 //roomID stores in firestore
@@ -218,6 +219,16 @@ useEffect(() => {
     const notYourTurn = playerNumber !== null && currentTurn !== null && playerNumber !== currentTurn;
     setShowBlockAACButtonOverlay(isEnd || notYourTurn);
   }, [phrase, playerNumber, currentTurn]);
+
+  const speakCurrentPhrase = useCallback(() => {
+    const u = new SpeechSynthesisUtterance(phrase);
+    u.addEventListener("end", () => {
+      // once it finishes, remove the overlay
+      setShowInitialPlayOverlay(false);
+    });
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(u);
+  }, [phrase]);
 
   /*useEffect(() => {
     setIsMounted(true);
@@ -424,6 +435,21 @@ useEffect(() => {
         }
 
   return (
+    <>
+    {showInitialPlayOverlay && (
+      <div
+        className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75"
+        style={{ backdropFilter: "blur(4px)" }}
+      >
+        <button
+          onClick={speakCurrentPhrase}
+          className="text-9xl p-8 bg-white rounded-full shadow-xl animate-pulse"
+          aria-label="Press to start reading"
+        >
+          ▶️
+        </button>
+      </div>
+    )}
     <div className="flex w-screen h-screen">
 
       {/* Left Panel: AAC Tablet */}
@@ -637,7 +663,7 @@ return (
     </AnimatePresence>
 
           {/* Calls AutomaticTextToSpeech, which speech texts the current fill in the blank phrase*/}
-          {phrase && (
+          {!showInitialPlayOverlay && phrase && (
             <TextToSpeechTextOnly2 key={phrase} text={phrase} />
 )}
 
@@ -665,5 +691,6 @@ return (
               </div>
           )}
       </div>
+      </>
   );
 }
