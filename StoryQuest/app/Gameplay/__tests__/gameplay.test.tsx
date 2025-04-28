@@ -5,10 +5,9 @@ class MockSpeechSynthesisUtterance {
     }
     // stub out the event API so addEventListener won’t crash
     addEventListener(type: string, listener: (...args: any[]) => void) {
-      // you could store these listeners if you need to simulate events
     }
     removeEventListener(type: string, listener: (...args: any[]) => void) {
-      // no-op
+
     }
   }
   
@@ -19,27 +18,27 @@ Object.defineProperty(HTMLMediaElement.prototype, 'play', {
     value: jest.fn().mockResolvedValue(undefined),
   });
   
-  // (Optional) stub pause if you call it anywhere
+  // stub pause
   Object.defineProperty(HTMLMediaElement.prototype, 'pause', {
     configurable: true,
     value: jest.fn(),
   });
 
-  // 1. First, create a proper mock for useAACSounds at the top of your test file
+  //mock of useAACSounds component
   jest.mock('../../Components/useAACSounds', () => {
-    // We need to use requireActual to get the real implementation
+  
     const originalModule = jest.requireActual('../../Components/useAACSounds');
     
-    // Create a mock function we can track
+    // Create a mock function
     const mockPlaySound = jest.fn();
     
     return {
       __esModule: true,
       default: () => ({
-        ...originalModule.default(), // Preserve other hook functionality
+        ...originalModule.default(),
         playSound: mockPlaySound, // Override just the playSound function
       }),
-      mockPlaySound // Export for test assertions
+      mockPlaySound // Export
     };
   });
 
@@ -68,8 +67,6 @@ jest.mock('firebase/firestore', () => ({
     runTransaction: jest.fn(),
   })); 
 
-// Update your test setup
-// In your test setup (beforeAll or beforeEach)
 beforeEach(() => {
     jest.clearAllMocks();
   
@@ -188,7 +185,7 @@ describe('Home', () => {
       });
       
       test('handles word selection through AAC keyboard', async () => {
-        // Create a mock callback we can trigger manually
+    
         let snapshotCallback: any = null;
         
         // Override the onSnapshot mock to capture the callback
@@ -243,7 +240,7 @@ describe('Home', () => {
 
   
     test('plays sound when a valid AAC word is selected', async () => {
-        // 3. Setup player state and Firebase mocks
+        // Setup player state and Firebase mocks
         jest.spyOn(React, 'useState')
         .mockImplementationOnce(() => [1, jest.fn()]) // playerNumber = 1
         .mockImplementationOnce(() => [1, jest.fn()]); // currentTurn = 1
@@ -260,21 +257,21 @@ describe('Home', () => {
         // Set session storage
         sessionStorage.setItem('player-uid', 'test-player-1');
 
-        // 4. Render the component
+        // Render the component
         render(<Home skipSetup />);
 
-        // 5. Find and click the button
+        // Find and click the button
         const mouseButton = await screen.findByAltText('mouse');
         fireEvent.click(mouseButton);
 
-        // 6. Verify the sound was played
+        // Verify sound was played
         await waitFor(() => {
         expect(mockPlaySound).toHaveBeenCalledWith('mouse');
         });
     });
   
     test('shows "The End!" when all sections are completed', async () => {
-      // 1. Mock Firestore references
+      //  Mock Firestore references
         const mockGameRef = { 
             path: 'games/test123',
             id: 'test123',
@@ -287,7 +284,7 @@ describe('Home', () => {
             parent: mockGameRef
         };
 
-        // 2. Configure Firestore mocks
+        // Configure Firestore mocks
         const firestore = require('firebase/firestore');
         
         firestore.doc.mockImplementation((path: string | string[]) => 
@@ -296,7 +293,7 @@ describe('Home', () => {
         
         firestore.collection.mockReturnValue(mockPlayersColRef);
 
-        // 3. Mock completed game data
+        // Mock completed game data
         const completedGameData = {
             currentPhrase: "The End!",
             gameStatus: "completed",
@@ -306,7 +303,7 @@ describe('Home', () => {
             maxPlayers: 4
         };
 
-        // 4. Properly mock players collection snapshot
+        // mock players collection snapshot
         const mockPlayersSnapshot = {
             docs: [
             {
@@ -329,7 +326,7 @@ describe('Home', () => {
             }
         };
 
-        // 5. Set up onSnapshot mocks
+        // Set up onSnapshot mocks
         firestore.onSnapshot.mockImplementation((ref: { path: string | string[]; }, callback: (arg0: { docs?: { id: string; data: () => { avatar: string; playerNumber: number; }; }[]; forEach?: (callback: (value: { id: string; data: () => { avatar: string; playerNumber: number; }; }, index: number, array: { id: string; data: () => { avatar: string; playerNumber: number; }; }[]) => void) => void; exists?: () => boolean; data?: () => { currentPhrase: string; gameStatus: string; completedPhrases: string[]; currentSectionIndex: number; currentTurn: number; maxPlayers: number; }; }) => void) => {
             if (ref?.path?.includes('players')) {
             callback(mockPlayersSnapshot);
@@ -342,10 +339,9 @@ describe('Home', () => {
             return jest.fn(); // unsubscribe
         });
 
-        // 6. Render the component
         render(<Home skipSetup />);
 
-        // 7. Verify completion
+        // Verify completion
         await waitFor(() => {
             expect(screen.getByText(/the end!/i)).toBeInTheDocument();
         }, { timeout: 3000 });
@@ -363,10 +359,7 @@ describe('Home', () => {
           .mockImplementationOnce(() => [{ playerNumber: 2, currentTurn: 1 }, jest.fn()]);
         
         render(<Home skipSetup/>);
-        
-        // Your test assertions...
-        
-        // Cleanup
+      
         alertSpy.mockRestore();
       });
 
