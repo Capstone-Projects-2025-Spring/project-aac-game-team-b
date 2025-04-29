@@ -17,10 +17,6 @@ import useAACSounds from '@/Components/useAACSounds';
 import { db } from "../../../../firebaseControls/firebaseConfig";
 import { doc, getDoc, setDoc, updateDoc, onSnapshot, getDocs, serverTimestamp, collection, runTransaction } from "firebase/firestore"; // to update the firestore database with game data
 
-interface HomeProps {
-  skipSetup?: boolean;
-}
-
 // SparkleEffect: A visual effect that simulates a sparkle animation.
 const SparkleEffect = ({ onComplete }: { onComplete: () => void }) => {
   return (
@@ -73,7 +69,8 @@ async function savePlayerProfile (
   }
 }
 
-export default function Home({ skipSetup = false }: HomeProps) {
+export default function Home() {
+  const skipSetup = process.env.NODE_ENV === 'test';
   const [currentStory, setCurrentStory] = useState<Story | null>(null);
   const { playSound } = useAACSounds(); // aac mp3 sound hook
   const [phrase, setPhrase] = useState("");
@@ -142,11 +139,10 @@ const gameFinished = lastCompleted === "The End!";
 
   useEffect(() => {
     if (skipSetup) {
-      // instantly allow the main UI to render
-      setTtsReady(true);
-      setAvatarModalOpen(false);
-      setShowInitialPlayOverlay(false);
-    }
+            setTtsReady(true);
+            setAvatarModalOpen(false);
+            setShowInitialPlayOverlay(false);
+          }
   }, [skipSetup]);
 
 
