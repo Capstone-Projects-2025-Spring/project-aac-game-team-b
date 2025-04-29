@@ -162,9 +162,12 @@ This test is here to ensure that the join room page renders in correctly for use
 application will be able to veiw standarized join room page. it can be found at `StoryQuest/app/JoinRoom/__tests__/page.test.tsx`.
 
 ### Mocks 
-The join room test mocks many diffrent depndencies. 
+The join room test mocks many diffrent depndencies. Some of these dependices are 
+- NEXT.js (next/link, next/image)
+- Firebase (doc, getDoc)
+- JRSQ
+- use-sound
 - 
-
 ## Test coverage report:
 npx jest --coverage: This generates the coverage report that showcases even how many lines of code are being tested.
 
