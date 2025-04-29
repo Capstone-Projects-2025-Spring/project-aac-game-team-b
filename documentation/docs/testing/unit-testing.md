@@ -157,7 +157,16 @@ This test checks to see that all the data is logged correctly after the user mak
 ### `allows user to change selected story`
 This test is to ensure that a user is able to select a different setting than their primary choice and have it still rendered on screen.
 
+## Join room
+This test is here to ensure that the join room page renders in correctly for users. This ensures that users that use the 
+application will be able to veiw standarized join room page. it can be found at `StoryQuest/app/JoinRoom/__tests__/page.test.tsx`.
+
+### Mocks 
+The join room test mocks many diffrent depndencies. 
+- 
 
 ## Test coverage report:
 npx jest --coverage: This generates the coverage report that showcases even how many lines of code are being tested.
+
+
 
